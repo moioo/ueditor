@@ -14,6 +14,7 @@ module Ueditor
       output_buffer = ActiveSupport::SafeBuffer.new
       #output_buffer << javascript_include_tag("#{RailsUeditor::assets_cdn}ueditor/ueditor.all.v3.min.js")
       output_buffer << build_text_area_tag(name, method, self, options, input_html)
+      #js_option = {editor_id: input_html['editor_id'], id: options[:id]}
       output_buffer << javascript_tag(js_replace(input_html['id'], options))
     end
 
@@ -27,16 +28,17 @@ module Ueditor
         
     private
     
-    def js_replace(dom_id, options = {})
+    def js_replace(dom_id, options = {}) 
       editor_id = options[:editor_id].nil? ? 'editor' : "#{options[:editor_id].to_s.downcase} "
       "var #{editor_id} = new UE.ui.Editor();#{editor_id}.render('#{dom_id}')"
     end
     
     def build_text_area_tag(name, method, template, options, input_html)
       if Rails.version >= '4.0.0'
-        text_area_tag = ActionView::Helpers::Tags::TextArea.new(name, method, template, options)
+        text_area_tag = ActionView::Helpers::Tags::TextArea.new(name, method, template, options.merge(input_html))
         text_area_tag.send(:add_default_name_and_id, input_html)
         text_area_tag.render
+        #ActionView::Helpers::Tags::TextArea.new(name, method, template, options.merge(input_html)).render
       else
         raise 'Please upgrade your Rails !'
       end
