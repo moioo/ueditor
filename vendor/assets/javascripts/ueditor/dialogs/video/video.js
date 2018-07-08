@@ -120,6 +120,30 @@
             align = findFocus("videoFloat","name");
         if(!url) return false;
         if ( !checkNum( [width, height] ) ) return false;
+        url = utils.trim(url);
+        if(/^<iframe/.test(url)){
+            var conUrl = '';
+            if(/src=\"[^\s"]+/i.test(url)){
+                conUrl = url.match(/src=\"[^\s"]+/i)[0].substr(5);
+            }
+            if(/\/\/v\.qq\.com\/iframe\/player\.html/i.test(conUrl)){
+                var newIframe = editor.document.createElement("iframe");
+                var div;
+                newIframe.setAttribute("src",/http:\/\/|https:\/\//ig.test(conUrl) ? conUrl : "http://"+conUrl);
+                /^[1-9]+[.]?\d*$/g.test( width.value ) ? newIframe.setAttribute("width",width.value) : newIframe.setAttribute("width",640);
+                /^[1-9]+[.]?\d*$/g.test( height.value ) ? newIframe.setAttribute("height",height.value) : newIframe.setAttribute("height",480);
+                //newIframe.setAttribute("scrolling","no");
+                newIframe.setAttribute("frameborder","0",0);
+                newIframe.setAttribute("allowfullscreen","allowfullscreen");
+                newIframe.setAttribute("align",align);
+                newIframe.setAttribute("class",'iframeVideo');
+                div = editor.document.createElement("div");
+                div.appendChild(newIframe);
+                console.log(div.innerHTML);
+                editor.execCommand("inserthtml",div.innerHTML);
+                return;
+            }
+        }
         editor.execCommand('insertvideo', {
             url: convert_url(url),
             width: width.value,
@@ -268,18 +292,30 @@
      */
     function createPreviewVideo(url){
         if ( !url )return;
-
-        var conUrl = convert_url(url);
-
-        conUrl = utils.unhtmlForUrl(conUrl);
-
-        $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
-        '<embed class="previewVideo" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
-            ' src="' + conUrl + '"' +
-            ' width="' + 420  + '"' +
-            ' height="' + 280  + '"' +
-            ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >' +
-        '</embed>';
+        url = utils.trim(url);
+        if(/^<iframe/.test(url)){
+            var conUrl = '';
+            if(/src=\"[^\s"]+/i.test(url)){
+                conUrl = url.match(/src=\"[^\s"]+/i)[0].substr(5);
+            }
+            $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
+            '<iframe class="previewVideo"' +
+                ' src="' + conUrl + '"' +
+                ' width="' + 420  + '"' +
+                ' height="' + 280  + '"' +
+                ' frameborder=0 allowfullscreen>' +
+            '</iframe>';
+        }else{
+            var conUrl = convert_url(url);
+            conUrl = utils.unhtmlForUrl(conUrl);
+            $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
+            '<embed class="previewVideo" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+                ' src="' + conUrl + '"' +
+                ' width="' + 420  + '"' +
+                ' height="' + 280  + '"' +
+                ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >' +
+            '</embed>';
+        }
     }
 
 
