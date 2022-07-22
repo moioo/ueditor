@@ -22598,7 +22598,7 @@ UE.plugins['basestyle'] = function(){
                     node.tagName = 'strong';
                     break;
                 case 'i':
-                    node.tagName = 'em';
+                    node.tagName = 'i';
             }
         });
     });
