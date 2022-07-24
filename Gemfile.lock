@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     ueditor (0.0.1)
+      multi_json (>= 1.15.0, < 2.0)
       rails (>= 5.2.0, < 8.0)
 
 GEM
@@ -89,8 +90,8 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
     minitest (5.16.2)
+    multi_json (1.15.0)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -106,8 +107,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.7)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.13.8-x86_64-darwin)
       racc (~> 1.4)
     racc (1.6.0)
     rack (2.2.4)
@@ -140,7 +140,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
-    strscan (3.0.3)
+    strscan (3.0.4)
     thor (1.2.1)
     timeout (0.3.0)
     tzinfo (2.0.5)
@@ -157,4 +157,4 @@ DEPENDENCIES
   ueditor!
 
 BUNDLED WITH
-   2.1.4
+   2.3.7
